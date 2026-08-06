@@ -131,7 +131,7 @@ export AGNES_BASE_URL=https://apihub.agnes-ai.com/v1
 
 项目级记忆使用 Markdown 文件维护，和 `/save` 的长期记忆分工不同：
 
-- `~/.polarcode/PAI.md`：用户级稳定偏好，所有项目可见。
+- `~/.polarcode/POLAR.md`：用户级稳定偏好，所有项目可见。
 - `POLAR.md`：项目级团队规则，建议提交到 git。
 - `@relative/path.md`：在 `POLAR.md` 中导入项目根内的相对文件；越靠后的文件越接近本地覆盖，优先级越高。
 
@@ -211,58 +211,6 @@ MCP 子系统默认开启。`~/.polarcode/mcp.json` 不存在时，PolarCode 会
 `command` 表示 stdio server，`url` 表示 Streamable HTTP server。`${PROJECT_DIR}` / `${HOME}` 是内置变量，其他 `${VAR}` 从环境变量读取；缺失会在启动时直接提示。
 
 `step_search` 是约定名称：如果项目 `.env`、用户 `~/.env` 或系统环境变量里存在 `STEP_API_KEY`，PolarCode 会自动内置这个远程 MCP；上面的手写配置只用于覆盖默认地址或自定义鉴权。当前模型为 `step-3.7-flash*` 时，内置 `web_search` / `web_fetch` 会优先代理到该 MCP server。
-
-需要复用当前登录态时，Chrome 144+ 推荐打开 `chrome://inspect/#remote-debugging` 并勾选 `Allow remote debugging for this browser instance`。旧版本或需要显式 CDP 端口时，可以启动带远程调试端口和独立 user-data-dir 的 Chrome，并在这个调试 Chrome 中完成登录：
-
-```bash
-# macOS
-open -na "Google Chrome" --args --remote-debugging-port=9222 --user-data-dir=/tmp/polarcode-chrome-profile
-
-# Windows
-start chrome.exe --remote-debugging-port=9222 --user-data-dir=%TEMP%\polarcode-chrome-profile
-
-# Linux
-google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/polarcode-chrome-profile
-```
-
-通常不需要用户预先切换；Agent 如果遇到登录页会自己调用 `browser_connect`。手工调试时也可以在 PolarCode 内执行：
-
-```text
-/browser status
-/browser connect
-/browser tabs
-/browser disconnect
-```
-
-`/browser connect` 只在当前进程内把 `chrome-devtools` 切到 shared 模式，不会改写 `~/.polarcode/mcp.json`。如果希望启动后默认 shared，可手动把 args 改为：
-
-```json
-["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
-```
-
-旧式 CDP HTTP JSON 端口也可使用：
-
-```json
-["-y", "chrome-devtools-mcp@latest", "--browser-url=http://127.0.0.1:9222"]
-```
-
-浏览器测试可直接让 Agent 读取动态页面，例如：
-
-```text
-帮我看下 https://mp.weixin.qq.com/s/RB7kF_BbsJZ5_Hmu9PxWdg 这篇文章讲了什么
-```
-
-期望路径是 `web_fetch` 尝试失败后，fallback 到 `mcp__chrome-devtools__navigate_page` 与 `take_snapshot`。
-
-如果 server 支持 resources，可以直接查看或引用：
-
-```text
-/mcp resources filesystem
-/mcp prompts filesystem
-帮我看下 @filesystem:file://README.md 这份文档
-```
-
-OAuth 和 `sampling/createMessage` 当前未实现；远程 server 需要鉴权时仍使用 `headers` + 环境变量注入 Bearer token。
 
 ### 3. 编译运行
 
