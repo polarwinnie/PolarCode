@@ -6,6 +6,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/paicli-main/pom.xml" />
+        <option value="$PROJECT_DIR$/polarcode-main/pom.xml" />
       </list>
     </option>
   </component>
