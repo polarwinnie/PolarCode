@@ -1,9 +1,11 @@
 # 环境变量文件（包含敏感信息）
 .env
+.env.example
 .polarcode/*
 !.polarcode/
 !.polarcode/POLAR.md
-PAI.local.md
+ROADMAP.md
+CLAUDE.md
 polarcode.bat
 polarcode.ps1
 voyah.md
