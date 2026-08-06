@@ -132,11 +132,10 @@ export AGNES_BASE_URL=https://apihub.agnes-ai.com/v1
 项目级记忆使用 Markdown 文件维护，和 `/save` 的长期记忆分工不同：
 
 - `~/.polarcode/PAI.md`：用户级稳定偏好，所有项目可见。
-- `PAI.md` / `.polarcode/PAI.md`：项目级团队规则，建议提交到 git。
-- `PAI.local.md` / `.polarcode/PAI.local.md`：本地覆盖，适合个人调试约定，建议加入 `.gitignore`。
-- `@relative/path.md`：在 `PAI.md` 中导入项目根内的相对文件；越靠后的文件越接近本地覆盖，优先级越高。
+- `POLAR.md`：项目级团队规则，建议提交到 git。
+- `@relative/path.md`：在 `POLAR.md` 中导入项目根内的相对文件；越靠后的文件越接近本地覆盖，优先级越高。
 
-可用 `/init` 为当前项目生成一份短 `PAI.md`。该命令默认不覆盖已有文件；确认需要重建时使用 `/init --force`。
+可用 `/init` 为当前项目生成一份短 `POLAR.md`。该命令默认不覆盖已有文件；确认需要重建时使用 `/init --force`。
 代码索引默认保存在 `~/.polarcode/rag/codebase.db`。
 调试日志默认滚动写入 `~/.polarcode/logs/polarcode.log`，旧日志会按保留天数和总容量自动清理。
 ReAct / Plan task / SubAgent / Planner 的模型 `reasoning_content` 会以 `LLM reasoning [...]` 形式写入该日志，便于排查模型为什么选择某个工具或路径。
